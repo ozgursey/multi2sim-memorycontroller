@@ -250,6 +250,7 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 	offset = addr & (MEM_PAGE_SIZE - 1);
 	assert(offset + size <= MEM_PAGE_SIZE);
 
+
 	/* On nonexistent page, raise segmentation fault in safe mode,
 	 * or create page with full privileges for writes in unsafe mode. */
 	if (!page)
@@ -270,6 +271,8 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 	}
 	assert(page);
 
+	
+
 	/* If it is a write access, set the 'modified' flag in the page
 	 * attributes (perm). This is not done for 'initialize' access. */
 	if (access == mem_access_write)
@@ -279,6 +282,8 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 	if (mem->safe && (page->perm & access) != access)
 		fatal("mem_access: permission denied at 0x%x", addr);
 
+
+	printf("%s [PAGE ACCESS] ",PRE_MON);
 	/* Read/execute access */
 	if (access == mem_access_read || access == mem_access_exec)
 	{
@@ -286,6 +291,8 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 			memcpy(buf, page->data + offset, size);
 		else
 			memset(buf, 0, size);
+
+		printf("[READING] \t data:%s\n",page->data);
 		return;
 	}
 
@@ -295,8 +302,12 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 		if (!page->data)
 			page->data = xcalloc(1, MEM_PAGE_SIZE);
 		memcpy(page->data + offset, buf, size);
+
+		printf("[WRITING] \t data:%s\n",buf);
 		return;
 	}
+	
+	
 
 	/* Shouldn't get here. */
 	abort();
@@ -308,6 +319,15 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 void mem_access(struct mem_t *mem, unsigned int addr, int size, void *buf,
 	enum mem_access_t access)
 {
+	printf("%s [MEM ACCESS] ",PRE_MON);
+	if(access ==  0x01)
+		printf("[mem_access_read] \t size %d \t address %d \n",access,size,addr);
+	else if(access ==  0x02)
+		printf("[mem_access_write]");
+	else printf("[other]");
+	
+	printf("\t size %d \t address %d \n",access,size,addr);
+	
 	unsigned int offset;
 	int chunksize;
 
