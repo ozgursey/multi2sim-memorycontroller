@@ -26,8 +26,8 @@
 #define MEM_PAGE_SIZE  (1 << MEM_LOG_PAGE_SIZE)
 #define MEM_PAGE_MASK  (~(MEM_PAGE_SIZE - 1))
 #define MEM_PAGE_COUNT  1024
-#define PRE_MON [@@MONITOR@@]
-#define DO_MONITOR(s) printf("[@@MONITOR@@] %s\n",s)
+#define PRE_MON "[@@MONITOR@@]"
+#define DO_MONITOR(s) printf("%s %s\n",PRE_MON,s)
 
 enum mem_access_t
 {
