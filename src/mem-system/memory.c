@@ -283,7 +283,7 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 		fatal("mem_access: permission denied at 0x%x", addr);
 
 
-	printf("%s [PAGE ACCESS] ",PRE_MON);
+	//printf("%s [PAGE ACCESS] ",PRE_MON);
 	/* Read/execute access */
 	if (access == mem_access_read || access == mem_access_exec)
 	{
@@ -292,7 +292,7 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 		else
 			memset(buf, 0, size);
 
-		printf("[READING] \t data:%s\n",page->data);
+		//printf("[READING] \t data:%s\n",page->data);
 		return;
 	}
 
@@ -303,7 +303,7 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 			page->data = xcalloc(1, MEM_PAGE_SIZE);
 		memcpy(page->data + offset, buf, size);
 
-		printf("[WRITING] \t data:%s\n",buf);
+	//	printf("[WRITING] \t data:%s\n",buf);
 		return;
 	}
 	
@@ -319,6 +319,7 @@ static void mem_access_page_boundary(struct mem_t *mem, unsigned int addr,
 void mem_access(struct mem_t *mem, unsigned int addr, int size, void *buf,
 	enum mem_access_t access)
 {
+	#if 0 
 	printf("%s [MEM ACCESS] ",PRE_MON);
 	if(access ==  0x01)
 		printf("[mem_access_read] \t size %d \t address %d \n",access,size,addr);
@@ -327,7 +328,7 @@ void mem_access(struct mem_t *mem, unsigned int addr, int size, void *buf,
 	else printf("[other]");
 	
 	printf("\t size %d \t address %d \n",access,size,addr);
-	
+	#endif
 	unsigned int offset;
 	int chunksize;
 
